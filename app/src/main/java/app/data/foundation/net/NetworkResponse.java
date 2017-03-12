@@ -21,16 +21,17 @@ import io.reactivex.SingleTransformer;
 import javax.inject.Inject;
 import retrofit2.Response;
 
+import static app.data.foundation.net.NetKt.adaptError;
+
 /**
  * Process a network response. On success returns the associated data. On error throws a {@link
  * NetworkException} to be able to detect it as a custom exception to be handled properly by the
  * downstream.
  */
 public final class NetworkResponse {
-  private final ErrorAdapter errorAdapter;
 
   @Inject public NetworkResponse() {
-    this.errorAdapter = new ErrorAdapter();
+
   }
 
   public <T> SingleTransformer<Response<T>, T> process() {
@@ -38,7 +39,7 @@ public final class NetworkResponse {
         .flatMap(response -> {
           if (response.isSuccessful()) return Single.just(response.body());
           try {
-            String error = errorAdapter.adapt(response.errorBody().string());
+            String error = adaptError(response.errorBody().string());
             return Single.error(new NetworkException(error));
           } catch (java.lang.Exception exception) {
             return Single.error(new RuntimeException(exception));

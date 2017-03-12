@@ -16,7 +16,7 @@
 
 package app.data.sections.users;
 
-import app.data.foundation.net.ErrorAdapter;
+import app.data.foundation.net.ErrorResponseAdapterMockery;
 import io.reactivex.Single;
 import io.victoralbertos.mockery.api.built_in_interceptor.Rx2Retrofit;
 import io.victoralbertos.mockery.api.built_in_mockery.DTOArgs;
@@ -36,7 +36,7 @@ import static io.victoralbertos.mockery.api.built_in_mockery.Valid.Template.STRI
 /**
  * Definition for Retrofit and Mockery of every endpoint required by the Api.
  */
-@Rx2Retrofit(delay = 2000, errorResponseAdapter = ErrorAdapter.class)
+@Rx2Retrofit(delay = 2000, errorResponseAdapter = ErrorResponseAdapterMockery.class)
 public interface GithubUsersApi {
   String HEADER_API_VERSION = "Accept: application/vnd.github.v3+json";
 
